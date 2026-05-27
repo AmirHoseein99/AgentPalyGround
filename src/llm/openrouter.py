@@ -5,7 +5,7 @@ from llm.prompt import SYSTEM_PROMPT
 
 class OpenRouterAPI:
 
-    def call_openrouter_api(self, user_input_messages):
+    def call_openrouter_api(self, messages):
         url = f"{setting.OPENROUTER_API_BASE_URL}/chat/completions"
         headers = {
             "Content-Type": "application/json",
@@ -13,10 +13,7 @@ class OpenRouterAPI:
         }
         data = {
             "model": setting.OPUERTER_MODEL,
-            "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_input_messages}
-            ]
+            "messages": messages
         }
         response = requests.post(url, headers=headers, json=data)
         if response.status_code == 200:
