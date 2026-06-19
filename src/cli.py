@@ -6,8 +6,10 @@ from llm.openrouter import OpenRouterAPI
 from llm.prompt import SYSTEM_PROMPT
 from llm.utils import stream_to_terminal
 
+from logger import get_logger
 
 def main():
+    logger = get_logger("cli")
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
     ]
@@ -22,13 +24,16 @@ def main():
 
         if user_message.strip().lower() == "/exit":
             print("\n[yellow]Exiting...[/yellow]")
+            logger.info("Exiting the AI Assistant.")
             sys.exit(0)
 
         if user_message.strip().lower() == "/clear":
             messages = [{"role": "system", "content": SYSTEM_PROMPT}]
             print("\n[yellow]Conversation cleared.[/yellow]\n")
+            logger.info("Conversation cleared.")
             continue
 
+        logger.info(f"User input: {user_message}")
         messages.append({"role": "user", "content": user_message})
 
         try:
@@ -41,10 +46,12 @@ def main():
                 openrouter_api=openrouter_api,
                 messages=messages
             )
+            logger.info(f"Assistant response: {assisstat_response}")
             messages.append({"role": "assistant", "content":assisstat_response})
             print("\n" + "─" * 50 + "\n")
 
         except Exception as e:
+            logger.error(f"Error during AI response: {e}")
             print(f"\n[red]Error:[/red] {e}\n")
 
 
