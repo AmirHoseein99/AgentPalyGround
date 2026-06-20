@@ -41,7 +41,7 @@ def call_agent(user_input):
                     continue
                 tool_result = tool(**tool_args)
             except Exception as e:
-                logger.error(f"Error occurred while calling tool {tool_name}: {e}")
+                logger.exception(f"Error occurred while calling tool {tool_name}: {e}")
                 tool_result = f"An error occurred while calling tool {tool_name}: {e}"
             logger.info(f"Tool result: {tool_result}")
             # Append the tool result to messages for the next iteration

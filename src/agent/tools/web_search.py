@@ -16,6 +16,6 @@ def web_search_tool(query: str) -> str:
         return response
     
     except Exception as e:
-        logger.error(f"Error occurred during web search: {e}")
+        logger.exception(f"Error occurred during web search: {e}")
         return f"An error occurred during web search: {e}"
     

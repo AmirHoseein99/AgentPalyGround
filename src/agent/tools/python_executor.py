@@ -13,5 +13,5 @@ def python_executor_tool(code: str) -> str:
         logger.info(f"Execution result: {result.stdout}")
         return result.stdout
     except subprocess.CalledProcessError as e:
-        logger.error(f"Error executing code: {e}")
+        logger.exception(f"Error executing code: {e}")
         return f"Error executing code: {e}"

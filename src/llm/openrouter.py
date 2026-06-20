@@ -36,5 +36,6 @@ class OpenRouterAPI:
         response = requests.post(self.url, headers=headers, json=data)
         if response.status_code == 200:
             return response.json()
-        else:        
+        else:     
+            self.logger.exception(f"OpenRouter API call failed with status code {response.status_code}: {response.text}")   
             raise Exception(f"OpenRouter API call failed with status code {response.status_code}: {response.text}")

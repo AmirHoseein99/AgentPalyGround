@@ -51,7 +51,7 @@ def main():
             print("\n" + "─" * 50 + "\n")
 
         except Exception as e:
-            logger.error(f"Error during AI response: {e}")
+            logger.exception(f"Error during AI response: {e}")
             print(f"\n[red]Error:[/red] {e}\n")
 
 

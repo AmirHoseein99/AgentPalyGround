@@ -16,5 +16,5 @@ async def call_agent_endpoint(user_input: str):
         logger.info(f"Agent response: {response}")
         return {"response": response}
     except Exception as e:
-        logger.error(f"Error calling agent: {e}")
+        logger.exception("Error calling agent")
         raise HTTPException(status_code=500, detail=str(e))
