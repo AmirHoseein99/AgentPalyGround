@@ -11,6 +11,7 @@ dependencies = [
     "python-env>=1.0.0",
     "requests>=2.34.2",
     "rich>=15.0.0",
+    "ruff>=0.15.18",
     "tavily>=1.1.0",
     "uvicorn>=0.48.0",
 ]
