@@ -29,9 +29,10 @@ def call_agent(user_input, conversation_history, conversation_id : str):
         parsed_response = agent_format_response(llm_response)
         append_to_converstaion(parsed_response, conversation_id)
         logger.info(f"Parsed response: {parsed_response}")
-        if parsed_response.get("type") == "final" : 
+        
+        if type(parsed_response) == str: 
             logger.info("Final response received from agent.")
-            return parsed_response.get("content")
+            return parsed_response
   
         elif parsed_response.get('type') == 'tool_call' : 
             logger.info("Tool call detected in agent response.")
