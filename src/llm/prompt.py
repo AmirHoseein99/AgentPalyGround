@@ -1,4 +1,4 @@
-SYSTEM_PROMPT = """
+AGENT_SYSTEM_PROMPT = """
 You are an AI agent with access to tools.
 
 You may solve tasks in two ways:

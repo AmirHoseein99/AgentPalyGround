@@ -1,7 +1,8 @@
 from math import log
+from operator import call
 from os import strerror
 
-from ..llm.prompt import SYSTEM_PROMPT
+from ..llm.prompt import AGENT_SYSTEM_PROMPT
 from ..llm.openrouter import OpenRouterAPI
 from .parser import agent_format_response
 from .tools.web_search import web_search_tool
@@ -18,7 +19,7 @@ max_steps = 10
 def call_agent(user_input, conversation_history, conversation_id: str):
     logger = get_logger("agent")
 
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT}]
     messages.extend(conversation_history)
     messages.append({"role": "user", "content": user_input})
 

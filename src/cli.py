@@ -3,7 +3,7 @@ import sys
 from rich import print
 
 from llm.openrouter import OpenRouterAPI
-from llm.prompt import SYSTEM_PROMPT
+from llm.prompt import AGENT_SYSTEM_PROMPT
 from llm.utils import stream_to_terminal
 
 from logger import get_logger
@@ -12,7 +12,7 @@ from logger import get_logger
 def main():
     logger = get_logger("cli")
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": AGENT_SYSTEM_PROMPT},
     ]
 
     openrouter_api = OpenRouterAPI()
@@ -29,7 +29,7 @@ def main():
             sys.exit(0)
 
         if user_message.strip().lower() == "/clear":
-            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT}]
             print("\n[yellow]Conversation cleared.[/yellow]\n")
             logger.info("Conversation cleared.")
             continue

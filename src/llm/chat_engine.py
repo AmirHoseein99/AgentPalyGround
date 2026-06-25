@@ -1,10 +1,10 @@
 from .openrouter import OpenRouterAPI
-from .prompt import SYSTEM_PROMPT
+from .prompt import AGENT_SYSTEM_PROMPT
 from .parser import format_response, parse_openrouter_stream
 
 openrouter_api = OpenRouterAPI()
 messages = [
-    {"role": "system", "content": SYSTEM_PROMPT},
+    {"role": "system", "content": AGENT_SYSTEM_PROMPT},
 ]
 
 
