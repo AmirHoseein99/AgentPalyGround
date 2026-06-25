@@ -30,7 +30,38 @@ class OpenRouterAPI:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {setting.OPENROUTER_API_KEY}",
         }
-        data = {"model": setting.OPENROUTER_MODEL, "messages": messages}
+        data = {"model": setting.OPENROUTER_MODEL, "messages": messages, 
+                    "response_format": {
+                        "type": "json_schema",
+                        "json_schema": {
+                            "name": "assisstant response",
+                            "strict": True,
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                "type": "string",
+                                "description": "final or tool_call, if final this is your final answer and you do not need any tools, so tool and args should be empty",
+                                },
+                                "tool": {
+                                "type": "string",
+                                "description": "tool name if type is tool_call",
+                                },
+                                "args": {
+                                "type": "string",
+                                "description": "args for the tool if type is tool_call",
+                                },                                
+                                "response": {
+                                "type": "string",
+                                "description": "llm response",
+                                },
+                            },
+                            "required": ["type", "response"],
+                            "additionalProperties": False,
+                            },
+                        },
+                        },
+                    }
         self.logger.info(
             f"calling openrouter api with header : {headers}, data : {data}"
         )
