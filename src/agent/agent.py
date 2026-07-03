@@ -30,13 +30,6 @@ class Agent:
     def get_tool(self, tool_name: str):
         return self.tools.get(tool_name, None)
 
-    def tool_description(self, tool_name: str):
-        tool = self.get_tool(tool_name)
-        if tool:
-            return tool.description
-        else:
-            return f"Tool '{tool_name}' not found."
-
     @property
     def tool_definitions(self):
         return [
