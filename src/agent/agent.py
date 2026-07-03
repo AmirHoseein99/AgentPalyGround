@@ -151,7 +151,7 @@ class Agent:
         return
 
 
-agent = Agent()
+agent = Agent(llm_api=OpenRouterAPI())
 
 agent.register_tool(PythonExecutorTool())
 agent.register_tool(WebSearchTool())
