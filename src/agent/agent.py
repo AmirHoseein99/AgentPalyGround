@@ -21,6 +21,7 @@ class Agent:
         self.llm_api = llm_api if llm_api is not None else OpenRouterAPI()
         self.tools: dict[str, BaseTool] = {}
         self.max_steps = 5  # Maximum number of steps the agent can take
+
     def register_tool(self, tool: BaseTool):
         self.tools[tool.name] = tool
 
@@ -47,7 +48,10 @@ class Agent:
             role="user", content=user_input, conversation_id=conversation_id
         )
         messages = [
-            {"role": "system", "content": build_agent_system_prompt(self.tool_definitions)},
+            {
+                "role": "system",
+                "content": build_agent_system_prompt(self.tool_definitions),
+            },
             *get_context(conversation_id),
         ]
         for i in range(self.max_steps):
@@ -119,7 +123,9 @@ class Agent:
                         raise ValueError(
                             f"tool_args must be dict, got {type(tool_args)}"
                         )
-                    self.logger.info(f"Executing tool: {tool_name} with args: {tool_args}")
+                    self.logger.info(
+                        f"Executing tool: {tool_name} with args: {tool_args}"
+                    )
                     tool_result = tool.execute(**tool_args)
                     append_to_conversation(
                         role="tool",
@@ -147,7 +153,9 @@ class Agent:
                     messages.append(
                         {"role": "tool", "content": f"Tool execution failed: {e}"}
                     )
-        self.logger.warning("Sorry, I couldn't complete the task within the step limit.")
+        self.logger.warning(
+            "Sorry, I couldn't complete the task within the step limit."
+        )
         return
 
 

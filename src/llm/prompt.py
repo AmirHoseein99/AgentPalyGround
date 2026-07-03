@@ -3,15 +3,16 @@ import json
 
 import json
 
+
 def build_agent_system_prompt(tool_definitions: list[dict]) -> str:
 
     tools_text = "\n\n".join(
-        f"""Tool Name: {t['name']}
-          Description: {t['description']}
+        f"""Tool Name: {t["name"]}
+          Description: {t["description"]}
           Schema:
-          {json.dumps(t['schema'], indent=2)}
+          {json.dumps(t["schema"], indent=2)}
           """.strip()
-                  for t in tool_definitions
+        for t in tool_definitions
     )
 
     return f"""
@@ -66,6 +67,8 @@ When to use each tool:
 - web_search → current events, unknown facts
 - python_executor → math, data, simulation
 """
+
+
 MEMORY_SUMMARIZER_PROMPT = """
 You are a conversation memory compression system for an AI agent.
 You are given the current conversation memory and a list of new conversation messages. Update the memory so that it reflects both the previous memory and the new information.

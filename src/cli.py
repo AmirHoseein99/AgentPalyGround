@@ -12,7 +12,10 @@ from llm.prompt import build_agent_system_prompt
 def main():
     logger = get_logger("cli")
     messages = [
-        {"role": "system", "content": build_agent_system_prompt(agent.tool_definitions)},
+        {
+            "role": "system",
+            "content": build_agent_system_prompt(agent.tool_definitions),
+        },
     ]
 
     openrouter_api = OpenRouterAPI()
@@ -29,7 +32,12 @@ def main():
             sys.exit(0)
 
         if user_message.strip().lower() == "/clear":
-            messages = [{"role": "system", "content": build_agent_system_prompt(agent.tool_definitions)}]
+            messages = [
+                {
+                    "role": "system",
+                    "content": build_agent_system_prompt(agent.tool_definitions),
+                }
+            ]
             print("\n[yellow]Conversation cleared.[/yellow]\n")
             logger.info("Conversation cleared.")
             continue
