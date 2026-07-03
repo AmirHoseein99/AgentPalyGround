@@ -16,9 +16,9 @@ from .tools.base import BaseTool
 
 
 class Agent:
-    def __init__(self):
+    def __init__(self, llm_api: OpenRouterAPI = None):
         self.logger = get_logger("agent")
-        self.llm_api = OpenRouterAPI()
+        self.llm_api = llm_api if llm_api is not None else OpenRouterAPI()
         self.tools: dict[str, BaseTool] = {}
         self.max_steps = 5  # Maximum number of steps the agent can take
     def register_tool(self, tool: BaseTool):
