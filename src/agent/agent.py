@@ -157,7 +157,7 @@ class Agent:
                     messages.append(
                         {"role": "tool", "content": f"Tool execution failed: {e}"}
                     )
-        logger.warning("Sorry, I couldn't complete the task within the step limit.")
+        self.logger.warning("Sorry, I couldn't complete the task within the step limit.")
         return
 
 
