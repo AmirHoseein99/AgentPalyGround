@@ -28,10 +28,7 @@ class Agent:
         return list(self.tools.keys())
 
     def get_tool(self, tool_name: str):
-        if tool_name not in self.tools:
-            self.logger.error(f"Tool '{tool_name}' not found.")
-            return None
-        return self.tools.get(tool_name)
+        return self.tools.get(tool_name, None)
 
     def tool_description(self, tool_name: str):
         tool = self.get_tool(tool_name)
