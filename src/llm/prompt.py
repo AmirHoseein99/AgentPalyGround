@@ -1,8 +1,6 @@
 import json
 
 
-
-
 def build_agent_system_prompt(tool_definitions: list[dict]) -> str:
 
     tools_text = "\n\n".join(

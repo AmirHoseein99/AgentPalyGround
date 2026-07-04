@@ -1,11 +1,13 @@
 from agent.tools.web_search import WebSearchTool
 from agent.tools.python_executor import PythonExecutorTool
 
+
 def test_web_search_tool():
     tool = WebSearchTool()
 
     result = tool.execute(query="hello")
     assert result is not None
+
 
 def test_python_executor_tool():
 

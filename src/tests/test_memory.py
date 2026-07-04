@@ -8,7 +8,8 @@ from memory.memory_manager import (
     get_context,
 )
 
-def test_memory_flow(conversation_id='test'):
+
+def test_memory_flow(conversation_id="test"):
 
     remove_conversation(conversation_id)
     initialize_conversation(conversation_id)
@@ -26,9 +27,7 @@ def test_memory_flow(conversation_id='test'):
 
     for role, content in messages:
         append_to_conversation(
-            conversation_id=conversation_id,
-            role=role,
-            content=content
+            conversation_id=conversation_id, role=role, content=content
         )
 
     # --------------------------

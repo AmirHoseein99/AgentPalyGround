@@ -22,9 +22,9 @@ class PythonExecutorTool(BaseTool):
             local_vars = {}
             exec(code, {}, local_vars)
 
-            logger.info(f"Execution result: {local_vars.get("result")}")
+            logger.info(f"Execution result: {local_vars.get('result')}")
             return local_vars.get("result")
-        
+
         except subprocess.CalledProcessError as e:
             logger.exception(f"Error executing code: {e}")
             return f"Error executing code: {e}"
