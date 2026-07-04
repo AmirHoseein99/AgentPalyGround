@@ -7,6 +7,7 @@ from llm.openrouter import OpenRouterAPI
 from llm.prompt import MEMORY_SUMMARIZER_PROMPT
 from core.config import setting
 
+
 def initialize_conversation(conversation_id: str) -> None:
     conversation_path = _conversation_path(conversation_id)
 
@@ -131,11 +132,17 @@ def get_context(conversation_id: str):
 
     memory = load_memory(conversation_id)
 
-    if len(conversation) - memory["last_summarized_index"] > setting.CONTEXT_WINDOW_SIZE:
+    if (
+        len(conversation) - memory["last_summarized_index"]
+        > setting.CONTEXT_WINDOW_SIZE
+    ):
         summarize_conversation(conversation_id)
         memory = load_memory(conversation_id)
 
-    return [{"role": "system", "content": _format_memory(memory)}, *conversation[-setting.CONTEXT_WINDOW_SIZE:]]
+    return [
+        {"role": "system", "content": _format_memory(memory)},
+        *conversation[-setting.CONTEXT_WINDOW_SIZE :],
+    ]
 
 
 # private helpers
