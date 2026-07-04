@@ -1,62 +1,55 @@
-from ..logger import get_logger
 import json
+from ..logger import get_logger
+from ..exceptions import ParserError
 
-TOOL_SCHEMAS = {"web_search": {"query": str}, "python_executor": {"code": str}}
-VALID_RESPONSE_TYPES = {"final", "tool"}
+VALID_TYPES = {"final", "tool_call"}
 
-VALID_TOOLS = {"web_search", "python_executor"}
 
+def check_llm_response(response, logger):
+    if "choices" not in response or not response["choices"]:
+        logger.error(f"Invalid OpenRouter response: {response}")
+        raise ParserError("Invalid OpenRouter Response.")
+
+
+def parse_json(response, logger):
+    try:
+        return json.loads(response["choices"][0]["message"]["content"])
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON: {e}")
+        raise ParserError("Cannot parse LLM response.")
+
+
+def validate_structure(data, logger):
+    if "type" not in data:
+        raise ParserError("Missing 'type' field")
+
+    if data["type"] not in VALID_TYPES:
+        raise ParserError(f"Invalid type: {data['type']}")
+
+    if data["type"] == "tool_call":
+        if "tool" not in data:
+            raise ParserError("Missing tool name")
+        if "args" not in data:
+            raise ParserError("Missing tool args")
+        if not isinstance(data["args"], dict):
+            raise ParserError("Tool args must be a dict")
+        
+        
 
 def agent_format_response(response):
-    parser_logger = get_logger("agent_parser")
-    try:
-        if "choices" not in response or len(response["choices"]) == 0:
-            parser_logger.error(f"Invalid OpenRouter response: {response}")
-            raise ValueError("Invalid OpenRouter response")
+    logger = get_logger("agent_parser")
 
-        try:
-            content = json.loads(response["choices"][0]["message"]["content"])
-        except json.JSONDecodeError as e:
-            parser_logger.error(f"Invalid JSON: {e}")
-            raise
+    check_llm_response(response, logger)
 
-        parser_logger.info(
-            f"Received model response: {content.get('type')}, {content.get('response')}"
-        )
+    content = parse_json(response, logger)
 
-        if content.get("type") not in VALID_RESPONSE_TYPES:
-            raise ValueError("Invalid response type")
+    validate_structure(content, logger)
 
-        if content.get("type") == "tool_call":
-            if content.get("tool") not in VALID_TOOLS:
-                raise ValueError("Invalid tool requested")
+    logger.info(f"Parsed response: {content}")
 
-        if content["type"] == "tool":
-            if "tool" not in content:
-                raise ValueError("Tool response missing tool name")
-
-            if "args" not in content:
-                raise ValueError("Tool response missing args")
-
-            schema = TOOL_SCHEMAS[content["tool"]]
-
-            for field, expected_type in schema.items():
-                value = content["args"].get(field)
-
-                if not isinstance(value, expected_type):
-                    raise ValueError(
-                        f"Invalid arg '{field}' for tool {content['tool']}"
-                    )
-
-        parsed_response = {
-            "type": content.get("type", None),
-            "tool": content.get("tool", None),
-            "args": content.get("args", None),
-            "message": content.get("response", None),
-        }
-
-        return parsed_response
-
-    except Exception as e:
-        parser_logger.exception(f"Failed to parse OpenRouter response: {e}")
-        raise
+    return {
+        "type": content["type"],
+        "tool": content.get("tool"),
+        "args": content.get("args"),
+        "message": content.get("response"),
+    }
