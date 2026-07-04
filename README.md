@@ -1,6 +1,28 @@
 # AgentPlayGround
 
+![Tests](https://github.com/AmirHoseein99/AgentPlayGround/actions/workflows/tests.yml/badge.svg)
+
 An advanced AI agent system that combines language models with tool execution capabilities, featuring a conversational CLI interface and web API.
+
+## About
+
+AgentPlayGround is a comprehensive AI agent framework designed to demonstrate the integration of large language models with practical tool execution capabilities. The project serves as both a functional AI assistant and an educational example of how to build sophisticated agent systems.
+
+### Key Differentiators
+
+- **Unified Interface**: Both CLI and Web API provide seamless access to the same agent capabilities
+- **Extensible Tool System**: Easy to add new tools for various domains and use cases
+- **Persistent Memory**: Conversations are saved and can be resumed with context
+- **Production-Ready**: Built with FastAPI, rich logging, and comprehensive error handling
+- **OpenRouter Integration**: Access to multiple LLM providers through a single interface
+
+### Use Cases
+
+- **Development**: Test and prototype AI agent workflows
+- **Research**: Experiment with different prompting strategies and tool combinations
+- **Education**: Learn about agent architecture and LLM integration patterns
+- **Automation**: Build automated assistants for specific tasks
+- **Integration**: Embed AI capabilities into existing applications
 
 ## Features
 
