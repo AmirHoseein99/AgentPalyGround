@@ -16,6 +16,7 @@ class ResponseHandler:
             state.messages.append(
                 {"role": "assistant", "content": json.dumps(parsed_response)}
             )
+            state.last_resposne = json.dumps(parsed_response)
             return parsed_response
         except ParserError as e:
             logger.error(f"Failed to parse LLM response: {e}")
