@@ -1,4 +1,5 @@
 # To install: pip install tavily-python
+from exceptions import ToolExecutionError
 from tavily import TavilyClient
 from core.config import setting
 from logger import get_logger
@@ -27,4 +28,4 @@ class WebSearchTool(BaseTool):
 
         except Exception as e:
             logger.exception(f"Error occurred during web search: {e}")
-            return f"An error occurred during web search: {e}"
+            raise ToolExecutionError(f"An error occurred during web search: {e}")

@@ -1,7 +1,7 @@
 import subprocess
 from logger import get_logger
 from agent.tools.base import BaseTool
-
+from exceptions import ToolExecutionError
 
 class PythonExecutorTool(BaseTool):
     name = "python_executor"
@@ -26,4 +26,4 @@ class PythonExecutorTool(BaseTool):
 
         except subprocess.CalledProcessError as e:
             logger.exception(f"Error executing code: {e}")
-            return f"Error executing code: {e}"
+            raise ToolExecutionError(f"Error executing code: {e}")
