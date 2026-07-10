@@ -1,12 +1,12 @@
-# AgentWorkbench
+# AgentWorkShop
 
-![Tests](https://github.com/AmirHoseein99/AgentPlayGround/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/AmirHoseein99/AgentWorkShop/actions/workflows/tests.yml/badge.svg)
 
 An advanced AI agent system that combines language models with tool execution capabilities, featuring a conversational CLI interface and web API.
 
 ## About
 
-AgentPlayGround is a comprehensive AI agent framework designed to demonstrate the integration of large language models with practical tool execution capabilities. The project serves as both a functional AI assistant and an educational example of how to build sophisticated agent systems.
+AgentWorkShop is a comprehensive AI agent framework designed to demonstrate the integration of large language models with practical tool execution capabilities. The project serves as both a functional AI assistant and an educational example of how to build sophisticated agent systems.
 
 ### Key Differentiators
 
@@ -52,8 +52,8 @@ graph TD
 The system follows a modular architecture with clear separation of concerns:
 
 - **CLI Layer**: User interaction through command-line interface
-- **Agent Layer**: Core agent logic and tool orchestration
-- **LLM Layer**: Language model integration and prompt management
+- **Agent Layer**: Core agent logic, planning, and tool orchestration
+- **LLM Layer**: Language model integration, prompt management, and structured outputs
 - **Tool Layer**: Extensible tool framework for external capabilities
 - **Memory Layer**: Conversation persistence and context management
 - **API Layer**: Web service endpoints for programmatic access
@@ -69,10 +69,10 @@ The system follows a modular architecture with clear separation of concerns:
 
 ```bash
 # Clone the repository
-https://github.com/yourusername/agent-playground.git
+https://github.com/AmirHoseein99/AgentWorkShop.git
 
 # Navigate to project directory
-cd agent-playground
+cd AgentWorkShop
 
 # Install dependencies using pip
 pip install -r requirements.txt
@@ -91,9 +91,6 @@ pip install -e .
 code-pilot
 
 # Start the web API
-server.py
-
-# Or run both using uvicorn
 uvicorn server:app --reload
 ```
 
@@ -118,6 +115,7 @@ uvicorn server:app --reload
 
 # Test the API endpoints
 curl "http://localhost:8000/api/llm/ask?user_input=Hello"
+curl -X POST "http://localhost:8000/api/agent/call_agent?user_input=Hello"
 ```
 
 ### Example CLI Session
@@ -137,38 +135,75 @@ The capital of France is Paris. It's known for its art, fashion, and culture.
 ## Project Structure
 
 ```
-/agent-playground/
+/AgentWorkShop/
 ├── src/
-│   ├── cli.py              # Command-line interface
-│   ├── server.py           # FastAPI web server
-│   ├── agent/              # Agent core system
-│   │   ├── agent.py        # Main agent class
-│   │   ├── api.py          # Agent API endpoints
-│   │   └── tools/          # Tool framework
-│   │       ├── base.py     # Base tool class
+│   ├── cli.py                   # Command-line interface
+│   ├── server.py                # FastAPI web server
+│   ├── agent/                   # Agent core system
+│   │   ├── agent.py             # Main Agent class
+│   │   ├── api.py               # Agent API endpoints
+│   │   ├── state.py             # AgentState dataclass
+│   │   ├── llm_runner.py        # LLM execution wrapper
+│   │   ├── response_handler.py  # Response parsing and state updates
+│   │   ├── tool_executer.py     # Tool validation and execution
+│   │   ├── action_executer.py   # Action orchestration for tool calls and final responses
+│   │   ├── parser.py            # LLM response validation and formatting
+│   │   ├── planner/             # Planning subsystem
+│   │   │   ├── planner.py       # Planner class
+│   │   │   ├── planner_prompt.py # Planner prompt builder
+│   │   │   └── models.py        # ExecutionPlan and PlanStep models
+│   │   └── tools/               # Tool implementations
+│   │       ├── base.py          # Base tool class
 │   │       ├── python_executor.py  # Python execution tool
 │   │       └── web_search.py      # Web search tool
-│   ├── core/               # Core utilities
-│   │   ├── config.py       # Configuration management
-│   │   └── logger.py       # Logging system
-│   ├── llm/                # LLM integration
-│   │   ├── api.py          # LLM API endpoints
-│   │   ├── chat_engine.py  # Chat engine
-│   │   ├── openrouter.py   # OpenRouter integration
-│   │   ├── parser.py       # Response parsing
-│   │   └── prompt.py       # Prompt templates
-│   └── memory/             # Memory system
-│       ├── json_memory.py  # JSON-based memory storage
-│       └── memory_manager.py  # Memory management
-├── tests/                  # Test suite
-│   ├── test_agent.py       # Agent tests
-│   ├── test_memory.py      # Memory tests
-│   ├── test_parser.py      # Parser tests
-│   └── test_tools.py       # Tool tests
-├── pyproject.toml          # Project configuration
-├── README.md               # This file
-└── requirements.txt        # Dependencies (generated)
+│   ├── core/                    # Core utilities
+│   │   └── config.py            # Configuration management
+│   ├── llm/                     # LLM integration
+│   │   ├── api.py               # LLM API endpoints
+│   │   ├── chat_engine.py       # Chat engine
+│   │   ├── openrouter.py        # OpenRouter integration
+│   │   ├── parser.py            # OpenRouter stream parsing
+│   │   ├── structure.py         # Output schemas for planner, agent, and memory
+│   │   ├── utils.py             # Streaming utilities
+│   │   └── prompts/             # Prompt templates
+│   │       ├── agent_system_prompt.py  # Agent system prompt builder
+│   │       ├── memory_prompt.py        # Memory summarizer prompt
+│   │       └── planner.txt             # Planner prompt template
+│   ├── memory/                  # Memory system
+│   │   ├── json_memory.py       # JSON-based memory storage
+│   │   └── memory_manager.py    # Memory management
+│   ├── exceptions.py            # Custom exception classes
+│   ├── logger.py                # Structured file logging setup
+│   └── tests/                   # Test suite
+│       ├── test_parser.py       # Parser tests
+│       └── test_tools.py        # Tool tests
+├── .github/workflows/           # CI workflows
+│   └── tests.yml                # Tests, ruff check, and formatting
+├── pyproject.toml               # Project configuration
+├── README.md                    # This file
+└── requirements.txt             # Dependencies (generated)
 ```
+
+## Agent System
+
+### Core Components
+
+- **Agent**: Main orchestrator that coordinates planning, LLM calls, and tool execution
+- **Planner**: Generates an `ExecutionPlan` with high-level steps before running the agent loop
+- **AgentState**: Tracks conversation state, steps, tool results, and plan progress
+- **LLMRunner**: Wraps LLM API calls for the agent
+- **ResponseHandler**: Parses LLM responses and updates agent state
+- **ActionExecutor**: Handles final responses and tool call outcomes
+- **ToolExecutor**: Validates arguments and executes registered tools
+
+### Agent Workflow
+
+1. **Plan Generation**: The `Planner` produces an `ExecutionPlan` from the user's request
+2. **LLM Loop**: The agent calls the LLM with the current message history
+3. **Response Parsing**: `ResponseHandler` parses the structured LLM response
+4. **Action Execution**: `ActionExecutor` either returns a final answer or executes a tool
+5. **State Update**: Conversation history and tool results are stored in `AgentState`
+6. **Memory Update**: Responses are persisted for future context
 
 ## Tool System
 
@@ -194,8 +229,11 @@ class BaseTool:
         self.name = name
         self.description = description
         self.schema = schema
-    
-    async def execute(self, parameters: dict) -> str:
+
+    def validate(self, args: dict):
+        raise NotImplementedError
+
+    async def execute(self, **kwargs) -> str:
         raise NotImplementedError
 ```
 
@@ -209,6 +247,24 @@ agent.register_tool(WebSearchTool())
 agent.register_tool(PythonExecutorTool())
 ```
 
+## Planner
+
+The planner generates a structured execution plan before the agent begins working:
+
+```python
+from agent.planner.planner import Planner
+from agent.planner.models import ExecutionPlan
+
+planner = Planner()
+plan: ExecutionPlan = planner.produce_plan(user_input="Build a todo app")
+```
+
+### Execution Plan Structure
+
+- **goal**: Overall objective of the user's request
+- **summary**: Brief summary of the planning process
+- **steps**: Ordered high-level tasks with expected outputs and dependencies
+
 ## Memory System
 
 The memory system provides persistent storage for conversations and context:
@@ -217,7 +273,7 @@ The memory system provides persistent storage for conversations and context:
 
 - **Conversation Storage**: Persistent conversation history
 - **Context Management**: Maintains conversation context across interactions
-- **Memory Manager**: Centralized memory operations
+- **Memory Manager**: Centralized memory operations with automatic summarization
 - **JSON Backend**: Simple and portable storage format
 
 ### Memory Operations
@@ -234,8 +290,8 @@ initialize_conversation(conversation_id="conv_123")
 
 # Add user message
 append_to_conversation(
-    role="user", 
-    content="Hello, how are you?", 
+    role="user",
+    content="Hello, how are you?",
     conversation_id="conv_123"
 )
 
@@ -258,35 +314,45 @@ Memory is stored in the `data/conversations/` directory:
 └── ...
 ```
 
-## Agent Loop
+### Memory Summarization
 
-The agent follows a structured loop to process user requests:
+When the conversation exceeds the configured threshold, the memory manager automatically summarizes older messages into compact facts, tasks, and a high-level summary, allowing long-running sessions without losing context.
 
-### Agent Workflow
+## Structured Outputs
 
-1. **Input Processing**: Receive user input and validate
-2. **Conversation Management**: Store input and retrieve context
-3. **Tool Selection**: Analyze request and select appropriate tools
-4. **LLM Integration**: Generate response using language model
-5. **Output Generation**: Format and return response
-6. **Memory Update**: Store response for future context
+The project uses strict JSON schemas for LLM responses:
 
-### Key Components
+- **Agent Output**: `final` or `tool_call` with tool name and arguments
+- **Planner Output**: Goal, summary, and ordered steps with dependencies
+- **Memory Summarizer Output**: Summary, facts, open tasks, and last summarized index
 
-- **Tool Definitions**: JSON schema for available tools
-- **System Prompt**: Instructions for agent behavior
-- **Message History**: Conversation context for LLM
-- **Step Limit**: Maximum number of reasoning steps
+## Exception Handling
 
-### Example Agent Execution
+Custom exceptions provide clear error handling across the system:
 
-```python
-agent = Agent()
-response = agent.run(
-    user_input="Search for Python best practices",
-    conversation_id="conv_123"
-)
-```
+- `ToolNotFoundError` - Raised when a requested tool is not registered
+- `ToolValidationError` - Raised when tool arguments fail schema validation
+- `ToolExecutionError` - Raised when a tool fails during execution
+- `ParserError` - Raised when the LLM response cannot be parsed
+- `LLMError` - Raised for general LLM API failures
+
+## Configuration
+
+Configuration is managed through environment variables:
+
+| Variable | Description |
+|----------|-------------|
+| `OPENROUTER_API_KEY` | API key for OpenRouter |
+| `OPENROUTER_API_BASE_URL` | Base URL for OpenRouter API |
+| `OPENROUTER_MODEL` | Model identifier to use |
+| `TAVILY_API_KEY` | API key for Tavily web search |
+| `PROXY` | Optional HTTP/HTTPS proxy URL |
+
+Default agent settings are defined in `src/core/config.py`:
+
+- `AGENT_MAX_STEP`: 5
+- `CONTEXT_WINDOW_SIZE`: 10
+- `CONVERSATION_MEMORY_THRESHOLD`: 20
 
 ## Running Tests
 
@@ -299,7 +365,7 @@ The project includes a comprehensive test suite:
 pytest
 
 # Run specific test module
-pytest tests/test_agent.py
+pytest tests/test_parser.py
 
 # Run tests with verbose output
 pytest -v
@@ -310,18 +376,16 @@ pytest --cov=src
 
 ### Test Categories
 
-- **Agent Tests**: Core agent functionality and tool integration
-- **Memory Tests**: Memory system operations and persistence
-- **Parser Tests**: Response parsing and formatting
+- **Parser Tests**: LLM response parsing and validation
 - **Tool Tests**: Individual tool functionality
 
-### Test Structure
+### CI Checks
 
-Tests use pytest with fixtures for:
-- Mock LLM responses
-- Test conversation scenarios
-- Tool execution testing
-- Memory state validation
+The GitHub Actions workflow runs on every push and pull request:
+
+- `pytest` for tests
+- `ruff check .` for linting
+- `ruff format --check .` for formatting
 
 ## License
 
