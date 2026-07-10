@@ -3,11 +3,14 @@ from logger import get_logger
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import requests
-from llm.structure import AGENT_OUTPUT_STRUCTURE, SUMMERIZER_STRUCTURE
+from llm.structure import AGENT_OUTPUT_STRUCTURE, SUMMERIZER_STRUCTURE, PLANNER_OUTPUT_STRUCTURE
 
 CALLER = {
     "agent": {
         "output_structure": AGENT_OUTPUT_STRUCTURE,
+    },
+    "planner": {
+        "output_structure": PLANNER_OUTPUT_STRUCTURE,
     },
     "memory_manager": {
         "output_structure": SUMMERIZER_STRUCTURE,
