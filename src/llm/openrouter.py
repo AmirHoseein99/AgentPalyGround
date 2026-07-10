@@ -64,7 +64,7 @@ class OpenRouterAPI:
         adapter = HTTPAdapter(max_retries=retry)
         session.mount("https://", adapter)
 
-        response = session.post(self.url, json=data, headers=headers, timeout=60)
+        response = session.post(self.url, json=data, headers=headers, timeout=60, proxies={'http': setting.PROXY, 'https': setting.PROXY} if setting.PROXY else None)
 
         if response.status_code == 200:
             return response.json()

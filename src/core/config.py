@@ -13,6 +13,6 @@ class Setting(object):
         self.AGENT_MAX_STEP = 5
         self.CONTEXT_WINDOW_SIZE = 10
         self.CONVERSATION_MEMORY_THRESHOLD = 20
-
+        self.PROXY = os.getenv("PROXY")
 
 setting = Setting()
