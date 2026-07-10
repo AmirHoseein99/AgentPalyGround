@@ -5,20 +5,19 @@ from memory.memory_manager import append_to_conversation
 
 
 class ResponseHandler:
-
     def parse(self, response, conversation_id: str, state, logger):
-        try :
+        try:
             parsed_response = agent_format_response(response)
             append_to_conversation(
-                        role="assistant",
-                        content=parsed_response,
-                        conversation_id=conversation_id,
-                    )
+                role="assistant",
+                content=parsed_response,
+                conversation_id=conversation_id,
+            )
             state.messages.append(
-                        {"role": "assistant", "content": json.dumps(parsed_response)}
-                    )
+                {"role": "assistant", "content": json.dumps(parsed_response)}
+            )
             return parsed_response
-        except ParserError as e: 
+        except ParserError as e:
             logger.error(f"Failed to parse LLM response: {e}")
             state.messages.append(
                 {
@@ -34,4 +33,3 @@ class ResponseHandler:
                 }
             )
             raise ParserError(f"Failed to parse response: {e}")
-
