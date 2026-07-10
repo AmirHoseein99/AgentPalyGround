@@ -14,7 +14,7 @@ from agent.tool_executer import ToolExecutor
 from agent.llm_runner import LLMRunner
 from agent.response_handler import ResponseHandler
 from agent.action_executer import ActionExecutor
-
+from agent.planner.planner import Planner
 
 class Agent:
     def __init__(self, llm_api: OpenRouterAPI = None):
@@ -28,6 +28,7 @@ class Agent:
         self.tool_executor = ToolExecutor(tools=self.tools)
         self.llm_runner = LLMRunner(llm=self.llm_api)
         self.action_executor = ActionExecutor(tools=self.tools)
+        self.planner = Planner()
 
     def register_tool(self, tool: BaseTool):
         self.tools[tool.name] = tool
@@ -55,25 +56,10 @@ class Agent:
         ]
 
     def run(self, user_input, conversation_id: str):
-
+        
         state = self.initialize_state(user_input, conversation_id)
-
-        append_to_conversation(
-            role="user", content=user_input, conversation_id=conversation_id
-        )
-        state.messages = [
-            {
-                "role": "system",
-                "content": build_agent_system_prompt(self.tool_definitions),
-            },
-            *get_context(state.conversation_id),
-        ]
-        # for i in range(self.max_steps):
-        while not state.finished and state.current_step < self.max_steps:
-            self.logger.info(
-                f"Step {state.current_step + 1}/{self.max_steps}: Sending messages to OpenRouter API."
-            )
-            self.logger.info("Calling OpenRouter API...")
+        state.plan = self.planner.produce_plan(user_input=user_input)
+        
 
             llm_response = self.llm_runner.run(messages=state.messages)
 
