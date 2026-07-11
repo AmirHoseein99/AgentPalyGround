@@ -42,7 +42,7 @@ class ActionExecutor:
                 append_to_conversation(
                     role="tool",
                     content=tool_result,
-                    conversation_id=conversation_id,
+                    conversation_id=state.conversation_id,
                     tool_name=tool_name,
                 )
                 state.messages.append(
