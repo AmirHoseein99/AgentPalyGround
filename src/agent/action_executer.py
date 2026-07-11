@@ -55,6 +55,7 @@ class ActionExecutor:
                         ),
                     }
                 )
+                return tool_result
             except ToolNotFoundError:
                 self.logger.error(f"Tool not found: {parsed_response.get('tool')}")
                 state.messages.append(
