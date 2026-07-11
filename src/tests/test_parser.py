@@ -1,6 +1,6 @@
 import pytest
-from agent.parser import agent_format_response
-from exceptions import ParserError
+from src.agent.parser import agent_format_response
+from src.exceptions import ParserError
 
 
 def test_valid_tool_call():

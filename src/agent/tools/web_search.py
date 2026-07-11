@@ -1,9 +1,9 @@
 # To install: pip install tavily-python
-from exceptions import ToolExecutionError
 from tavily import TavilyClient
-from core.config import setting
-from logger import get_logger
-from agent.tools.base import BaseTool
+from src.exceptions import ToolExecutionError
+from src.core.config import setting
+from src.logger import get_logger
+from src.agent.tools.base import BaseTool
 
 
 class WebSearchTool(BaseTool):

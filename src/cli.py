@@ -2,11 +2,11 @@
 import sys
 from rich import print
 
-from llm.openrouter import OpenRouterAPI
-from llm.utils import stream_to_terminal
-from agent.agent import agent
-from logger import get_logger
-from llm.prompts.agent_system_prompt import build_agent_system_prompt
+from src.llm.openrouter import OpenRouterAPI
+from src.llm.utils import stream_to_terminal
+from src.agent.agent import agent
+from src.logger import get_logger
+from src.llm.prompts.agent_system_prompt import build_agent_system_prompt
 
 
 def main():

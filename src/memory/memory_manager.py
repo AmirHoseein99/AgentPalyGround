@@ -3,9 +3,9 @@ import json
 import shutil
 from typing import List, Any
 from pathlib import Path
-from llm.openrouter import OpenRouterAPI
-from llm.prompts.memory_prompt import MEMORY_SUMMARIZER_PROMPT
-from core.config import setting
+from src.llm.openrouter import OpenRouterAPI
+from src.llm.prompts.memory_prompt import MEMORY_SUMMARIZER_PROMPT
+from src.core.config import setting
 
 
 def initialize_conversation(conversation_id: str) -> None:

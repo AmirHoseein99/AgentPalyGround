@@ -1,20 +1,20 @@
-from llm.prompts.agent_system_prompt import build_agent_system_prompt
-from llm.openrouter import OpenRouterAPI
-from agent.tools.web_search import WebSearchTool
-from agent.tools.python_executor import PythonExecutorTool
-from logger import get_logger
-from memory.memory_manager import (
-    get_context,
-    append_to_conversation,
-)
-from agent.tools.base import BaseTool
-from core.config import setting
-from agent.state import AgentState
-from agent.tool_executer import ToolExecutor
-from agent.llm_runner import LLMRunner
-from agent.response_handler import ResponseHandler
-from agent.action_executer import ActionExecutor
-from agent.planner.planner import Planner
+import json
+
+from src.agent.executor.executor_prompt import build_step_executor_system_prompt
+from src.agent.executor.step_executor import StepExecutor
+from src.llm.openrouter import OpenRouterAPI
+from src.agent.tools.web_search import WebSearchTool
+from src.agent.tools.python_executor import PythonExecutorTool
+from src.logger import get_logger
+from src.agent.tools.base import BaseTool
+from src.core.config import setting
+from src.agent.state import AgentState
+from src.agent.tool_executer import ToolExecutor
+from src.agent.llm_runner import LLMRunner
+from src.agent.response_handler import ResponseHandler
+from src.agent.action_executer import ActionExecutor
+from src.agent.planner.planner import Planner
+from src.memory.memory_manager import append_to_conversation, initialize_conversation
 
 class Agent:
     def __init__(self, llm_api: OpenRouterAPI = None):

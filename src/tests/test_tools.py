@@ -1,5 +1,5 @@
-from agent.tools.web_search import WebSearchTool
-from agent.tools.python_executor import PythonExecutorTool
+from src.agent.tools.web_search import WebSearchTool
+from src.agent.tools.python_executor import PythonExecutorTool
 
 
 def test_web_search_tool():

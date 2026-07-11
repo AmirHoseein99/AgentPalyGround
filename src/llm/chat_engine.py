@@ -1,8 +1,8 @@
-from agent.agent import agent
+from src.agent.agent import agent
 
-from llm.openrouter import OpenRouterAPI
-from llm.prompts.agent_system_prompt import build_agent_system_prompt
-from llm.parser import format_response, parse_openrouter_stream
+from src.llm.openrouter import OpenRouterAPI
+from src.llm.prompts.agent_system_prompt import build_agent_system_prompt
+from src.llm.parser import format_response, parse_openrouter_stream
 
 openrouter_api = OpenRouterAPI()
 messages = [

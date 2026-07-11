@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from llm.api import router as llm_router
-from agent.api import agent_router
+from src.llm.api import router as llm_router
+from src.agent.api import agent_router
 
 
 app = FastAPI()
