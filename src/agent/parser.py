@@ -2,7 +2,7 @@ import json
 from src.logger import get_logger
 from src.exceptions import ParserError
 
-VALID_TYPES = {"final", "tool_call"}
+VALID_TYPES = {"final", "tool_call", "step_result"}
 
 
 def check_llm_response(response, logger):
