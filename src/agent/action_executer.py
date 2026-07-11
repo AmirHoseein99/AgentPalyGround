@@ -13,7 +13,9 @@ class ActionExecutor:
         self.logger = get_logger("action_executor")
 
     def execute_action(
-        self, state: AgentState, parsed_response: dict,
+        self,
+        state: AgentState,
+        parsed_response: dict,
     ):
         # --------------------
         # FINAL RESPONSE

@@ -3,7 +3,12 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from src.core.config import setting
 from src.logger import get_logger
-from src.llm.structure import AGENT_OUTPUT_STRUCTURE, SUMMERIZER_STRUCTURE, PLANNER_OUTPUT_STRUCTURE, EXECUTOR_OUTPUT_STRUCTUR
+from src.llm.structure import (
+    AGENT_OUTPUT_STRUCTURE,
+    SUMMERIZER_STRUCTURE,
+    PLANNER_OUTPUT_STRUCTURE,
+    EXECUTOR_OUTPUT_STRUCTUR,
+)
 
 CALLER = {
     "agent": {
@@ -17,7 +22,7 @@ CALLER = {
     },
     "executor": {
         "output_structure": EXECUTOR_OUTPUT_STRUCTUR,
-    }
+    },
 }
 
 
@@ -67,7 +72,15 @@ class OpenRouterAPI:
         adapter = HTTPAdapter(max_retries=retry)
         session.mount("https://", adapter)
 
-        response = session.post(self.url, json=data, headers=headers, timeout=60, proxies={'http': setting.PROXY, 'https': setting.PROXY} if setting.PROXY else None)
+        response = session.post(
+            self.url,
+            json=data,
+            headers=headers,
+            timeout=60,
+            proxies={"http": setting.PROXY, "https": setting.PROXY}
+            if setting.PROXY
+            else None,
+        )
 
         if response.status_code == 200:
             return response.json()

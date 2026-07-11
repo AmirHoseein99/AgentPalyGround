@@ -27,6 +27,7 @@ class ToolNotFoundError(Exception):
     def __init__(self, message) -> None:
         super().__init__(message)
 
+
 class PlanExecutionError(Exception):
     def __init__(self, message) -> None:
         super().__init__(message)

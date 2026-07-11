@@ -8,9 +8,9 @@ from src.memory.memory_manager import append_to_conversation
 
 class ResponseHandler:
     def __init__(self):
-        self.logger = get_logger('AgentResponseHandler')
-        
-    def parse(self, response, state:AgentState):
+        self.logger = get_logger("AgentResponseHandler")
+
+    def parse(self, response, state: AgentState):
         try:
             parsed_response = agent_format_response(response)
             append_to_conversation(

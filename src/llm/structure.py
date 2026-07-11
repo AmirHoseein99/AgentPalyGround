@@ -1,80 +1,38 @@
 EXECUTOR_OUTPUT_STRUCTUR = {
-  "type": "json_object",
-  "properties": {
-    "type": {
-      "type": "string",
-      "enum": [
-        "tool_call",
-        "step_result"
-      ]
+    "type": "json_object",
+    "properties": {
+        "type": {"type": "string", "enum": ["tool_call", "step_result"]},
+        "tool": {"type": ["string", "null"]},
+        "args": {"type": ["object", "null"]},
+        "status": {
+            "type": ["string", "null"],
+            "enum": ["completed", "failed", "needs_user_input", "in_progress", "null"],
+        },
+        "summary": {"type": ["string", "null"]},
+        "artifacts": {"type": ["object", "null"]},
+        "user_question": {"type": ["string", "null"]},
     },
-
-    "tool": {
-      "type": ["string", "null"]
-    },
-
-    "args": {
-      "type": ["object", "null"]
-    },
-
-    "status": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "enum": [
-        "completed",
-        "failed",
-        "needs_user_input",
-        "in_progress",
-        "null"
-      ]
-    },
-
-    "summary": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-
-    "artifacts": {
-      "type": [
-        "object",
-        "null"
-      ]
-    },
-
-    "user_question": {
-      "type": [
-        "string",
-        "null"
-      ]
-    }
-  },
-
-  "required": [
-    "type",
-    "tool",
-    "args",
-    "status",
-    "summary",
-    "artifacts",
-    "user_question"
-  ],
-
-  "additionalProperties": False
+    "required": [
+        "type",
+        "tool",
+        "args",
+        "status",
+        "summary",
+        "artifacts",
+        "user_question",
+    ],
+    "additionalProperties": False,
 }
 PLANNER_OUTPUT_STRUCTURE = {
     "type": "json_object",
     "properties": {
         "goal": {
             "type": "string",
-            "description": "Overall objective of the user's request."
+            "description": "Overall objective of the user's request.",
         },
         "summary": {
             "type": "string",
-            "description": "A brief summary of the planning process and results."
+            "description": "A brief summary of the planning process and results.",
         },
         "steps": {
             "type": "array",
@@ -82,39 +40,31 @@ PLANNER_OUTPUT_STRUCTURE = {
             "items": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
+                    "id": {"type": "integer"},
                     "description": {
                         "type": "string",
-                        "description": "A high-level description of the task."
+                        "description": "A high-level description of the task.",
                     },
                     "expected_output": {
                         "type": "string",
-                        "description": "What successful completion of this step should produce."
+                        "description": "What successful completion of this step should produce.",
                     },
                     "depends_on": {
                         "type": "array",
-                        "items": {
-                            "type": "integer"
-                        },
-                        "description": "IDs of prerequisite steps."
-                    }
+                        "items": {"type": "integer"},
+                        "description": "IDs of prerequisite steps.",
+                    },
                 },
                 "required": [
                     "id",
                     "description",
                     "expected_output",
                     "depends_on",
-                ]
-            }
-        }
+                ],
+            },
+        },
     },
-    "required": [
-        "goal",
-        "summary",
-        "steps"
-    ]
+    "required": ["goal", "summary", "steps"],
 }
 
 AGENT_OUTPUT_STRUCTURE = {

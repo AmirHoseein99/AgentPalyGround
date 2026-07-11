@@ -15,4 +15,5 @@ class Setting(object):
         self.CONVERSATION_MEMORY_THRESHOLD = 20
         self.PROXY = os.getenv("PROXY")
 
+
 setting = Setting()

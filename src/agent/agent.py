@@ -1,4 +1,3 @@
-
 from src.agent.executor.step_executor import StepExecutor
 from src.llm.openrouter import OpenRouterAPI
 from src.agent.tools.web_search import WebSearchTool
@@ -13,6 +12,7 @@ from src.agent.action_executer import ActionExecutor
 from src.agent.planner.planner import Planner
 from src.memory.memory_manager import append_to_conversation, initialize_conversation
 
+
 class Agent:
     def __init__(self, llm_api: OpenRouterAPI = None):
         self.logger = get_logger("agent")
@@ -21,7 +21,7 @@ class Agent:
         self.max_steps = (
             setting.AGENT_MAX_STEP
         )  # Maximum number of steps the agent can take
-        
+
         self.tool_executor = ToolExecutor(tools=self.tools)
         self.llm_runner = LLMRunner(llm=self.llm_api)
         self.action_executor = ActionExecutor(tools=self.tools)
@@ -53,25 +53,33 @@ class Agent:
         ]
 
     def run(self, user_input, conversation_id: str):
-        
+
         initialize_conversation(conversation_id)
-        append_to_conversation(conversation_id=conversation_id, role="user", content=user_input)
-        
+        append_to_conversation(
+            conversation_id=conversation_id, role="user", content=user_input
+        )
+
         state = self.initialize_state(user_input, conversation_id)
         state.plan = self.planner.produce_plan(user_input=user_input)
-        
-        append_to_conversation(conversation_id=conversation_id, role="system", content=f"Planning completed with {len(state.plan.steps)} steps")
-        
-        
-        results = {}
-        
-        self.setp_executor= StepExecutor(
-            tool_definitions=self.tool_definitions,
-            tools=self.tools
+
+        append_to_conversation(
+            conversation_id=conversation_id,
+            role="system",
+            content=f"Planning completed with {len(state.plan.steps)} steps",
         )
-        
+
+        results = {}
+
+        self.setp_executor = StepExecutor(
+            tool_definitions=self.tool_definitions, tools=self.tools
+        )
+
         for step in state.plan.steps:
-            append_to_conversation(conversation_id=conversation_id, role="system", content=f"Plan step : {step}")
+            append_to_conversation(
+                conversation_id=conversation_id,
+                role="system",
+                content=f"Plan step : {step}",
+            )
             if all(results.get(dep_id) is not None for dep_id in step.depends_on):
                 result = self.setp_executor.execute_step(step, results, state)
                 results[step.id] = result

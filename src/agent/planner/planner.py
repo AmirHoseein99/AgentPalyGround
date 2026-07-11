@@ -6,9 +6,10 @@ from src.llm.openrouter import OpenRouterAPI
 from src.logger import get_logger
 from src.agent.planner.planner_prompt import build_planner_prompt
 
-class Planner :
+
+class Planner:
     def __init__(self):
-        
+
         self.llm = LLMRunner(llm=OpenRouterAPI())
         self.logger = get_logger("planner")
         self.plan = None
@@ -18,8 +19,10 @@ class Planner :
         prompt = build_planner_prompt(user_input=user_input)
 
         self.logger.info(f"Generating plan for input: {user_input}")
-        response = self.llm.run(messages=[{"role": "system", "content": prompt}], caller="planner")
-        self.plan = response['choices'][0]['message']['content']
+        response = self.llm.run(
+            messages=[{"role": "system", "content": prompt}], caller="planner"
+        )
+        self.plan = response["choices"][0]["message"]["content"]
 
         data = json.loads(self.plan)
 

@@ -8,14 +8,8 @@ def build_step_executor_system_prompt(tool_definitions: list[dict]) -> str:
             Description: {tool["description"]}
             Schema:
             {json.dumps(tool["schema"], indent=2)}"""
-            
-            for tool in tool_definitions
+        for tool in tool_definitions
     )
-    template = Path(
-        "src/llm/prompts/executor.txt"
-    ).read_text()
+    template = Path("src/llm/prompts/executor.txt").read_text()
 
-    return template.replace(
-        "{tools_text}",
-        tools_text
-    )
+    return template.replace("{tools_text}", tools_text)
